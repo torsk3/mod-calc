@@ -1,26 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+const Calculator: React.FC = () => {
+  const [displayValue, setDisplayValue] = useState<string>('');
+
+  const appendNumber = (number: string): void => {
+    setDisplayValue((prevValue) => prevValue + number);
+  };
+
+  const appendOperator = (operator: string): void => {
+    if (displayValue !== '') {
+      setDisplayValue((prevValue) => prevValue + operator);
+    }
+  };
+
+  const appendDot = (): void => {
+    if (displayValue.indexOf('.') === -1) {
+      setDisplayValue((prevValue) => prevValue + '.');
+    }
+  };
+
+  const calculate = (): void => {
+    try {
+      const result: number = eval(displayValue);
+      setDisplayValue(result.toString());
+    } catch (error) {
+      setDisplayValue('Error');
+    }
+  };
+
+  const clearDisplay = (): void => {
+    setDisplayValue('');
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="calculator">
+      <input type="text" value={displayValue} readOnly />
+      <br />
+      <button onClick={() => appendNumber('7')}>7</button>
+      <button onClick={() => appendNumber('8')}>8</button>
+      <button onClick={() => appendNumber('9')}>9</button>
+      <button onClick={() => appendOperator('/')}>/</button>
+      <br />
+      <button onClick={() => appendNumber('4')}>4</button>
+      <button onClick={() => appendNumber('5')}>5</button>
+      <button onClick={() => appendNumber('6')}>6</button>
+      <button onClick={() => appendOperator('-')}>-</button>
+      <br />
+      <button onClick={() => appendNumber('1')}>1</button>
+      <button onClick={() => appendNumber('2')}>2</button>
+      <button onClick={() => appendNumber('3')}>3</button>
+      <button onClick={() => appendOperator('+')}>+</button>
+      <br />
+      <button onClick={() => appendNumber('0')}>0</button>
+      <button onClick={appendDot}>.</button>
+      <button onClick={calculate}>=</button>
+      <button onClick={clearDisplay}>C</button>
     </div>
   );
-}
+};
 
-export default App;
+export default Calculator;
